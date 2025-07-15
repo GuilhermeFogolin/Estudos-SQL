@@ -4,7 +4,7 @@
 
 SELECT 
 	CURRENT_DATE AS "Hoje",
-	CURRENT_DATE + 10 "Daqui 10 dias..." -- Soma apenas 10 dias
+	CURRENT_DATE + 10 "Daqui 10 dias..."; -- Soma apenas 10 dias
 
 SELECT CURRENT_DATE + interval '10 weeks' -- 10 semanas com hora
 
