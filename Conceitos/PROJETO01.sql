@@ -35,3 +35,17 @@ SELECT
 FROM leads l
 LEFT JOIN payments p
 ON l.visit_page_month = p.paid_month;
+
+-- Query 02: País, estados e vendas
+
+SELECT
+	'Brasil' AS "País", -- Para montar o gráfico no Excel
+	c.state AS "Estado",
+	COUNT(f.paid_date) AS "Vendas (#)"
+FROM sales.funnel f
+LEFT JOIN sales.customers c
+ON f.customer_id = c.customer_id
+WHERE paid_date BETWEEN '2021-08-01' AND '2021-08-31'
+GROUP BY "País", "Estado"
+ORDER BY "Vendas (#)" DESC
+LIMIT 5;
