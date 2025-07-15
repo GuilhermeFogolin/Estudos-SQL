@@ -62,3 +62,16 @@ WHERE paid_date BETWEEN '2021-08-01' AND '2021-08-31'
 GROUP BY "Marca"
 ORDER BY "Vendas" DESC
 LIMIT 5;
+
+-- Query 04: Loja e vendas
+
+SELECT
+	s.store_name AS "Lojas",
+	COUNT(f.paid_date) AS "Vendas"
+FROM sales.funnel f
+LEFT JOIN sales.stores s
+ON f.store_id = s.store_id
+WHERE paid_date BETWEEN '2021-08-01' AND '2021-08-31'
+GROUP BY "Lojas"
+ORDER BY "Vendas" DESC
+LIMIT 5;
