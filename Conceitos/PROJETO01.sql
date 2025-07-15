@@ -49,3 +49,16 @@ WHERE paid_date BETWEEN '2021-08-01' AND '2021-08-31'
 GROUP BY "País", "Estado"
 ORDER BY "Vendas (#)" DESC
 LIMIT 5;
+
+-- Query 03: Marca e vendas
+
+SELECT
+	p.brand AS "Marca",
+	COUNT(f.paid_date) AS "Vendas"
+FROM sales.funnel f
+LEFT JOIN sales.products p
+ON f.product_id = p.product_id
+WHERE paid_date BETWEEN '2021-08-01' AND '2021-08-31'
+GROUP BY "Marca"
+ORDER BY "Vendas" DESC
+LIMIT 5;
