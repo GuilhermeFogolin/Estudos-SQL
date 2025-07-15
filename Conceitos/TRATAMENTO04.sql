@@ -21,4 +21,27 @@ SELECT
 	COUNT(*)
 FROM sales.funnel
 GROUP BY "Meses"
-ORDER BY "Meses" DESC
+ORDER BY "Meses" DESC;
+
+-- EXTRACT: Extração de unidades de uma data
+
+SELECT
+	'2022-01-30'::date,
+	EXTRACT('dow' FROM '2022-01-30'::date); -- Day of Week
+
+SELECT
+	EXTRACT('dow' FROM visit_page_date) AS "DOW",
+	COUNT(*)
+FROM sales.funnel
+GROUP BY "DOW"
+ORDER BY "DOW";
+
+-- Diferença de datas com operador de subtração
+
+SELECT CURRENT_DATE - '2018-06-01'; -- Por dias
+
+SELECT (CURRENT_DATE - '2018-06-01') / 7; -- Por semanas
+
+SELECT (CURRENT_DATE - '2018-06-01') / 30; -- Por meses
+
+SELECT (CURRENT_DATE - '2018-06-01') / 365; -- Por anos
