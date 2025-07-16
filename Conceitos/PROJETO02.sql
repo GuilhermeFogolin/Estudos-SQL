@@ -30,3 +30,20 @@ SELECT
 FROM sales.customers c
 GROUP BY professional_status
 ORDER BY "Leads (%)";
+
+-- Query 03: Faixa etária e leads
+
+SELECT
+	CASE
+		WHEN datediff('y', birth_date, CURRENT_DATE) < 20 THEN '0-20'
+		WHEN datediff('y', birth_date, CURRENT_DATE) < 40 THEN '20-40'
+		WHEN datediff('y', birth_date, CURRENT_DATE) < 60 THEN '40-60'
+		WHEN datediff('y', birth_date, CURRENT_DATE) < 80 THEN '60-80'
+		ELSE '80+'
+		END AS "Faixa etária",
+	COUNT(*)::float / (SELECT COUNT(*) FROM sales.customers) AS "Leads (%)"
+FROM sales.customers
+GROUP BY "Faixa etária"
+ORDER BY "Faixa etária" DESC
+
+		
