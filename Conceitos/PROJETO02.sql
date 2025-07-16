@@ -125,3 +125,15 @@ SELECT
 FROM faixa_idade
 GROUP BY "Idade do veículo", "Ordem"
 ORDER BY "Ordem";
+
+-- Query 07: Marca, modelo e visitas
+
+SELECT
+	p.brand AS "Marca",
+	p.model AS "Modelo",
+	COUNT(*) AS "Visitas (#)"
+FROM sales.funnel f
+LEFT JOIN sales.products p
+ON f.product_id = p.product_id
+GROUP BY p.brand, p.model
+ORDER BY p.brand, p.model, "Visitas (#)";
