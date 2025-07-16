@@ -67,3 +67,25 @@ SELECT
 FROM sales.customers
 GROUP BY "Faixa salarial", "Ordem"
 ORDER BY "Ordem" DESC
+
+-- Query 05: Classificação dos veículos
+
+WITH classificacao AS (
+	SELECT
+		f.visit_page_date,
+		p.model_year,
+		EXTRACT('y' FROM visit_page_date) - p.model_year::int AS idade,
+		CASE
+			WHEN (EXTRACT('y' FROM visit_page_date) - p.model_year::int) <= 2 THEN 'Novo'
+			ELSE 'Seminovo'
+			END AS "Classificação"
+	FROM sales.funnel f
+	LEFT JOIN sales.products p
+	ON f.product_id = p.product_id
+)
+
+SELECT
+	"Classificação",
+	COUNT(*) AS "Veículos visitados"
+FROM classificacao
+GROUP BY "Classificação";
