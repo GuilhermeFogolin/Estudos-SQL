@@ -89,3 +89,39 @@ SELECT
 	COUNT(*) AS "Veículos visitados"
 FROM classificacao
 GROUP BY "Classificação";
+
+-- Query 06: Idade dos veículos visitados
+
+WITH faixa_idade AS (
+	SELECT
+		f.visit_page_date,
+		p.model_year,
+		EXTRACT('y' FROM visit_page_date) - p.model_year::int AS idade,
+		CASE
+			WHEN (EXTRACT('y' FROM visit_page_date) - p.model_year::int) <= 2 THEN 'Até 2 anos'
+			WHEN (EXTRACT('y' FROM visit_page_date) - p.model_year::int) <= 4 THEN 'Até 2 à 4 anos'
+			WHEN (EXTRACT('y' FROM visit_page_date) - p.model_year::int) <= 6 THEN 'Até 4 à 6 anos'
+			WHEN (EXTRACT('y' FROM visit_page_date) - p.model_year::int) <= 8 THEN 'Até 6 à 8 anos'
+			WHEN (EXTRACT('y' FROM visit_page_date) - p.model_year::int) <= 10 THEN 'Até 8 à 10 anos'
+			ELSE 'Acima de 10 anos'
+			END AS "Idade do veículo",
+		CASE
+			WHEN (EXTRACT('y' FROM visit_page_date) - p.model_year::int) <= 2 THEN 1
+			WHEN (EXTRACT('y' FROM visit_page_date) - p.model_year::int) <= 4 THEN 2
+			WHEN (EXTRACT('y' FROM visit_page_date) - p.model_year::int) <= 6 THEN 3
+			WHEN (EXTRACT('y' FROM visit_page_date) - p.model_year::int) <= 8 THEN 4
+			WHEN (EXTRACT('y' FROM visit_page_date) - p.model_year::int) <= 10 THEN 5
+			ELSE 6
+			END AS "Ordem"
+	FROM sales.funnel f
+	LEFT JOIN sales.products p
+	ON f.product_id = p.product_id
+)
+
+SELECT
+	"Idade do veículo",
+	COUNT(*)::float / (SELECT COUNT(*) FROM sales.funnel) AS "Veículos visitados (%)",
+	"Ordem"
+FROM faixa_idade
+GROUP BY "Idade do veículo", "Ordem"
+ORDER BY "Ordem";
